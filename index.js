@@ -481,7 +481,7 @@ class SortableListView extends React.Component {
     const scrollEnabled =
       !this.state.active && this.props.scrollEnabled !== false
 
-    const ListViewComponent = this.props.ListViewComponent || ListView
+    const ListViewComponent = Animated.createAnimatedCompoent(this.props.ListViewComponent || ListView)
 
     return (
       <View ref="wrapper" style={{ flex: 1 }} collapsable={false}>
@@ -491,7 +491,10 @@ class SortableListView extends React.Component {
           {...this.state.panResponder.panHandlers}
           ref="list"
           dataSource={dataSource}
-          onScroll={this.handleScroll}
+          onScroll={Animated.event(
+            this.props.scrollMapping,
+            {listener: this.handleScroll, useNativeDriver: true}
+          )}
           onContentSizeChange={this.handleContentSizeChange}
           onLayout={this.handleListLayout}
           scrollEnabled={scrollEnabled}
